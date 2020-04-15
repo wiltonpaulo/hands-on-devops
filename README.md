@@ -30,11 +30,16 @@ disable SELINUX em: /etc/sysconfig/selinux
 
 Disable swap
 
+3. Configurar hostnames
+>sudo hostnamectl set-hostname master-node
+>sudo hostnamectl set-hostname worker-node1
+>sudo hostnamectl set-hostname worker-node2
+
 ## Kubernetes
 
 ### Instalar cluster kubernetes
 1. Criar o cluster
-```#  kubeadm init --pod-network-cidr=10.244.0.0/16
+```$ kubeadm init --pod-network-cidr=10.244.0.0/16
 W0415 19:40:43.292546    3585 configset.go:202] WARNING: kubeadm cannot validate component configs for API groups [kubelet.config.k8s.io kubeproxy.config.k8s.io]
 [init] Using Kubernetes version: v1.18.1
 [preflight] Running pre-flight checks
@@ -145,22 +150,152 @@ deployment.apps/calico-kube-controllers created
 serviceaccount/calico-kube-controllers created
 ```
 
-### Instalar/Configurar Helm
-- Script xyz
-```bash
-$comando 1
-$comando 2
+
+4. Rodar join nos worker nodes
 ```
+ kubeadm join 172.31.24.89:6443 --token i551h2.sz9x3syvdgi7vl7x \
+>     --discovery-token-ca-cert-hash sha256:8419726439040e89ad709f6c07adff630e996419341a369e4406318bdb2078ff
+W0415 20:08:20.478184    4249 join.go:346] [preflight] WARNING: JoinControlPane.controlPlane settings will be ignored when control-plane flag is not set.
+[preflight] Running pre-flight checks
+        [WARNING IsDockerSystemdCheck]: detected "cgroupfs" as the Docker cgroup driver. The recommended driver is "systemd". Please follow the guide at https://kubernetes.io/docs/setup/cri/
+        [WARNING Service-Kubelet]: kubelet service is not enabled, please run 'systemctl enable kubelet.service'
+[preflight] Reading configuration from the cluster...
+[preflight] FYI: You can look at this config file with 'kubectl -n kube-system get cm kubeadm-config -oyaml'
+[kubelet-start] Downloading configuration for the kubelet from the "kubelet-config-1.18" ConfigMap in the kube-system namespace
+[kubelet-start] Writing kubelet configuration to file "/var/lib/kubelet/config.yaml"
+[kubelet-start] Writing kubelet environment file with flags to file "/var/lib/kubelet/kubeadm-flags.env"
+[kubelet-start] Starting the kubelet
+[kubelet-start] Waiting for the kubelet to perform the TLS Bootstrap...
+
+This node has joined the cluster:
+* Certificate signing request was sent to apiserver and a response was received.
+* The Kubelet was informed of the new secure connection details.
+
+Run 'kubectl get nodes' on the control-plane to see this node join the cluster.
+```
+
+5. Fazer untaint do node master
+> kubectl taint nodes --all node-role.kubernetes.io/master-
+
+### Instalar/Configurar Helm
+
+Link para o procedimento: [Install Helm](https://helm.sh/docs/intro/install/)
 
 ### Configurar certificado cert-manager
-- Instalar cert-manager
+  [Documentação oficial](https://cert-manager.io/docs/installation/kubernetes/)
+
+1. Instalar o CustomResourceDefinitions
+> $ kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.14.1/cert-manager.yaml
+
+
+2. Criar namespace e instalar o helm do cert-manager
 ```bash
-$ helm install values.yaml cert-manager
+$ kubectl create namespace cert-manager
+namespace/cert-manager created
+[cloud_user@linuxacademycc1c cert-manager]$ helm repo add jetstack https://charts.jetstack.io
+"jetstack" has been added to your repositories
+[cloud_user@linuxacademycc1c cert-manager]$ helm repo update
+Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "jetstack" chart repository
+...Successfully got an update from the "stable" chart repository
+Update Complete. ⎈ Happy Helming!⎈ 
+[cloud_user@linuxacademycc1c cert-manager]$ helm install \
+>   cert-manager jetstack/cert-manager \
+>   --namespace cert-manager \
+>   --version v0.14.1
+NAME: cert-manager
+LAST DEPLOYED: Wed Apr 15 21:09:03 2020
+NAMESPACE: cert-manager
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+cert-manager has been deployed successfully!
+
+In order to begin issuing certificates, you will need to set up a ClusterIssuer
+or Issuer resource (for example, by creating a 'letsencrypt-staging' issuer).
+
+More information on the different types of issuers and how to configure them
+can be found in our documentation:
+
+https://cert-manager.io/docs/configuration/
+
+For information on how to configure cert-manager to automatically provision
+Certificates for Ingress resources, take a look at the `ingress-shim`
+documentation:
+
+https://cert-manager.io/docs/usage/ingress/
+[cloud_user@linuxacademycc1c cert-manager]$ 
 ```
 
-### Instalar/Configurar istio
-- lorem ipsum
-- lorem ipsum
+3. Configurar ClusterIssuer e Token para acesso ao Cert-manager
+```
+$ cloudflare-api-token.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cloudflare-api-token-secret
+  namespace: cert-manager
+type: Opaque
+stringData:
+  api-token: xxxxx
+```
+```
+$ cloudflare-api-token.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cloudflare-api-token-secret
+  namespace: cert-manager
+type: Opaque
+stringData:
+  api-token: vKG2FpmPfnzRVPb30gHRWenSlxupOtwEjS8c8HZ9
+[cloud_user@linuxacademycc1c cert-manager]$ cat vKG2FpmPfnzRVPb30gHRWenSlxupOtwEjS8c8HZ9^C
+[cloud_user@linuxacademycc1c cert-manager]$ cat clusterissuer.yaml
+apiVersion: cert-manager.io/v1alpha2
+kind: ClusterIssuer
+metadata:
+ name: letsencrypt-cloudflare
+ namespace: cert-manager
+spec:
+ acme:
+   server: https://acme-v02.api.letsencrypt.org/directory
+   email: w*******o@gmail.com
+   privateKeySecretRef:
+     name: letsencrypt-cloudflare
+   solvers:
+   - dns01:
+      cloudflare:
+        email: w*******o@gmail.com
+        apiTokenSecretRef:
+          name: cloudflare-api-token-secret
+          key: api-token
+   - http01:
+       ingress:
+         class:  nginx
+```
+
+4. Aplicar a configuração do cluster issuer
+```shell
+kubectl apply -f cloudflare-api-token.yaml
+kubectl apply -f clusterissuer.yaml
+```
+
+### Instalar/Configurar nginx-ingress
+1. Clonar o repositorio de charts
+> mkdir apps
+> cd apps
+> git clone https://github.com/helm/charts.git
+> mv charts/stables/nginx-ingress .
+
+2. Alterar o arquivo values.yaml de LoadBalance para ClusterIP
+
+3. Dentro do nginx-ingress criar namespace e depois install do helm-charts nginx-ingress
+> cd nginx-ingress
+> kubectl create ns nginx-ingress
+> helm install -f values.yaml -n nginx-ingress nginx-ingress stable/nginx-ingress
+
+### Configurar LoadBalance HAPROXY para o nginx-ingress
 
 ### Instalar/Configurar CICD (Jenkins, DroneCI, etc)
 - lorem ipsum
