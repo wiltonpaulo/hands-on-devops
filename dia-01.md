@@ -1,3 +1,6 @@
+| [Home](https://crwlabs.github.io/hands-on-devops/)
+| [Dia 01](https://crwlabs.github.io/dia-01)
+
 ## Bem Vindo ao Projeto Hands On DevOps Online
 
 ## Setup Inicial
