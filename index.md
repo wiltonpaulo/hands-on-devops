@@ -1,8 +1,8 @@
-<center>( [Home](https://crwlabs.github.io/hands-on-devops/)|
-  [Dia 01](https://crwlabs.github.io/hands-on-devops/dia-01)|
-  [Dia 02](https://crwlabs.github.io/hands-on-devops/dia-02)|
-  [Dia 03](https://crwlabs.github.io/hands-on-devops/dia-03)
-)</center>
+[Home](https://crwlabs.github.io/hands-on-devops/) | 
+[Dia 01](https://crwlabs.github.io/hands-on-devops/dia-01) | 
+[Dia 02](https://crwlabs.github.io/hands-on-devops/dia-02) | 
+[Dia 03](https://crwlabs.github.io/hands-on-devops/dia-03)
+
 
 
 
