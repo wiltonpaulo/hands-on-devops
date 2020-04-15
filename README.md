@@ -1,36 +1,42 @@
-## Welcome to GitHub Pages
+## Bem Vindo ao Projeto Hands On DevOps Online
 
-You can use the [editor on GitHub](https://github.com/crwlabs/hands-on-devops/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+## Instalar cluster kubernetes
+- Instalar o sistema operacional
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+## Instalar/Configurar Helm
+- Script xyz
+```bash
+$comando 1
+$comando 2
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+## Configurar certificado cert-manager
+- Instalar cert-manager
+```bash
+$ helm install values.yaml cert-manager
+```
 
-### Jekyll Themes
+## Instalar/Configurar istio
+- lorem ipsum
+- lorem ipsum
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/crwlabs/hands-on-devops/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+## Instalar/Configurar CICD (Jenkins, DroneCI, etc)
+- lorem ipsum
+- lorem ipsum
+
+## Criar uma aplicação e configurar um repositório GIT
+- lorem ipsum
+- lorem ipsum
+
+## Criar um Pipeline de deploy por ambiente/branch
+---
+## Configurar DNS apontando para o ELB
+## Criar infra usando Terraform
+## Configurar HPA/AutoScalling cluster
+## Monitoramento com Grafana
+## Elastic Stack
+
+
 
 ### Support or Contact
 
