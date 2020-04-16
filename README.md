@@ -31,9 +31,11 @@ disable SELINUX em: /etc/sysconfig/selinux
 Disable swap
 
 3. Configurar hostnames
->sudo hostnamectl set-hostname master-node
->sudo hostnamectl set-hostname worker-node1
->sudo hostnamectl set-hostname worker-node2
+```
+sudo hostnamectl set-hostname master-node
+sudo hostnamectl set-hostname worker-node1
+sudo hostnamectl set-hostname worker-node2
+```
 
 ## Kubernetes
 
@@ -291,9 +293,11 @@ kubectl apply -f clusterissuer.yaml
 2. Alterar o arquivo values.yaml de LoadBalance para ClusterIP
 
 3. Dentro do nginx-ingress criar namespace e depois install do helm-charts nginx-ingress
-> cd nginx-ingress
-> kubectl create ns nginx-ingress
-> helm install -f values.yaml -n nginx-ingress nginx-ingress stable/nginx-ingress
+```
+cd nginx-ingress
+kubectl create ns nginx-ingress
+helm install -f values.yaml -n nginx-ingress nginx-ingress stable/nginx-ingress
+```
 
 ### Configurar LoadBalance HAPROXY para o nginx-ingress
 
