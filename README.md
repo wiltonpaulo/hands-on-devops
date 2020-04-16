@@ -6,7 +6,7 @@
 
 ### Instalar Sistema Operacional
 1. Logar na conta linuxacademy e criar 3 instancias
-> server01, server02, server03
+> master-node, worker-node1, worker-node2
 
 ### Atualizar pacotes e dependencias
 1. Repositório
@@ -23,10 +23,10 @@ EOF
 ```
 
 2. Instalar pacotes
-sudo yum install -y kubelet kubeadm kubectl
+  sudo yum install -y kubelet kubeadm kubectl
 
-setenforce 0
-disable SELINUX em: /etc/sysconfig/selinux
+  setenforce 0
+  disable SELINUX em: /etc/sysconfig/selinux
 
 Disable swap
 
@@ -235,6 +235,7 @@ https://cert-manager.io/docs/usage/ingress/
 ```
 
 3. Configurar ClusterIssuer e Token para acesso ao Cert-manager
+
 ```
 $ cloudflare-api-token.yaml
 apiVersion: v1
@@ -246,6 +247,8 @@ type: Opaque
 stringData:
   api-token: xxxxx
 ```
+
+
 ```
 apiVersion: cert-manager.io/v1alpha2
 kind: ClusterIssuer
@@ -270,7 +273,7 @@ spec:
          class:  nginx
 ```
 
-4. Aplicar a configuração do cluster issuer
+1. Aplicar a configuração do cluster issuer
 ```shell
 kubectl apply -f cloudflare-api-token.yaml
 kubectl apply -f clusterissuer.yaml
