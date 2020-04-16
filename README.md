@@ -118,6 +118,7 @@ kubeadm join 172.31.24.89:6443 --token i551h2.sz9x3syvdgi7vl7x \
 ```
 
 2. Para começar a usar o kubernetes
+
 ```
 To start using your cluster, you need to run the following as a regular user:
 
@@ -127,6 +128,7 @@ To start using your cluster, you need to run the following as a regular user:
 ```
 
 3. Configurar a rede com o Calico
+
 ```
 $ kubectl apply -f https://docs.projectcalico.org/v3.9/manifests/calico.yaml
 configmap/calico-config created
