@@ -243,17 +243,6 @@ stringData:
   api-token: xxxxx
 ```
 ```
-$ cloudflare-api-token.yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: cloudflare-api-token-secret
-  namespace: cert-manager
-type: Opaque
-stringData:
-  api-token: vKG2FpmPfnzRVPb30gHRWenSlxupOtwEjS8c8HZ9
-[cloud_user@linuxacademycc1c cert-manager]$ cat vKG2FpmPfnzRVPb30gHRWenSlxupOtwEjS8c8HZ9^C
-[cloud_user@linuxacademycc1c cert-manager]$ cat clusterissuer.yaml
 apiVersion: cert-manager.io/v1alpha2
 kind: ClusterIssuer
 metadata:
