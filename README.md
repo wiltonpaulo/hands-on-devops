@@ -41,7 +41,8 @@ sudo hostnamectl set-hostname worker-node2
 
 ### Instalar cluster kubernetes
 1. Criar o cluster
-```$ kubeadm init --pod-network-cidr=10.244.0.0/16
+```shell
+$ kubeadm init --pod-network-cidr=10.244.0.0/16
 W0415 19:40:43.292546    3585 configset.go:202] WARNING: kubeadm cannot validate component configs for API groups [kubelet.config.k8s.io kubeproxy.config.k8s.io]
 [init] Using Kubernetes version: v1.18.1
 [preflight] Running pre-flight checks
