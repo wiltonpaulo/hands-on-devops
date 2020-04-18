@@ -1,6 +1,6 @@
-  [Home](https://crwlabs.github.io/hands-on-devops/) | [Dia 01](https://crwlabs.github.io/hands-on-devops/dia-01) |   [Dia 02](https://crwlabs.github.io/hands-on-devops/dia-02) |   [Dia 03](https://crwlabs.github.io/hands-on-devops/dia-03)
+  [Home](https://crwlabs.github.io/hands-on-devops/) | [Dia 01](https://crwlabs.github.io/hands-on-devops/dia-01)
 
-## Bem Vindo ao Projeto Hands On DevOps Online
+## Dia 01
 
 ## Setup Inicial
 

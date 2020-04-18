@@ -9,3 +9,6 @@ relative_links:
   enabled: true
   collections: true
 markdown: CommonMarkGhPages
+commonmark:
+  options: ["SMART", "FOOTNOTES"]
+  extensions: ["strikethrough", "autolink", "table", "tagfilter"]
