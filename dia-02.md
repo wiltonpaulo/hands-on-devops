@@ -136,6 +136,9 @@ systemctl enable haproxy
 systemctl start haproxy
 ```
 
+**Abrir as portas 80 e 443 para acesso publico**
+
+
 ### Apontar o DNS para o Ingress-Controller e Instancias com HaProxy
 **Identificar o clusterID do Ingress-controller**
 
@@ -195,6 +198,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: data-drone
+  namespace: drone
 spec:
   accessModes:
     - ReadWriteMany
@@ -279,7 +283,7 @@ spec:
     http:
       paths:
       - backend:
-          serviceName: drone-drone
+          serviceName: drone
           servicePort: 80
   tls:
   - hosts:
@@ -300,6 +304,8 @@ $ kubectl apply -f ingress.yaml
 ```
 drone-crwlabs.tecdump.com IN CNAME elb-crwlabs.tecdump.com
 ```
+
+
 
 ## Criar imagem base para o Pipeline
 ## Fazer Pipeline de Aplicação de Backend
